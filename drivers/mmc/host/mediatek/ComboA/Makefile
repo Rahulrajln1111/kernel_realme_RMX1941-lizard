@@ -24,6 +24,7 @@ ccflags-y += -I$(srctree)/drivers
 ifeq ($(CONFIG_MTK_PLATFORM), "mt6761")
 ccflags-y += -I$(srctree)/drivers/mmc/host/mediatek/ComboA/mt6765
 else
+ccflags-y += -I$(srctree)/drivers/mmc/host/mediatek/ComboA/
 ccflags-y += -I$(srctree)/drivers/mmc/host/mediatek/ComboA/$(MTK_PLATFORM)
 endif
 

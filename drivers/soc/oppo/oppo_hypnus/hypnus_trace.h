@@ -31,7 +31,7 @@
 #undef TRACE_SYSTEM
 #define TRACE_SYSTEM hypnus
 #undef TRACE_INCLUDE_PATH
-#define TRACE_INCLUDE_PATH .
+#define TRACE_INCLUDE_PATH drivers/soc/oppo/oppo_hypnus
 #undef TRACE_INCLUDE_FILE
 #define TRACE_INCLUDE_FILE hypnus_trace
 

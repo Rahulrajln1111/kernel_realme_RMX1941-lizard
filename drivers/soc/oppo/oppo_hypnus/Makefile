@@ -1,3 +1,5 @@
+ccflags-y += -I$(srctree)
+
 ccflags-$(CONFIG_ARCH_QCOM) += -I$(srctree)/drivers/gpu/msm/
 ccflags-$(CONFIG_MACH_MT6779) += -I$(srctree)/drivers/misc/mediatek/include/ -I$(srctree)/drivers/misc/mediatek/base/power/include/	\
 	-I$(srctree)/drivers/misc/mediatek/base/power/mcdi/include -I$(srctree)/drivers/misc/mediatek/sched/	\

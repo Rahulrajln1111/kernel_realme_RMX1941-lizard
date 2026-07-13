@@ -48,7 +48,7 @@ TRACE_EVENT(fuel_gauge,
 #endif /*_PERF_TRACKER_TRACE_H */
 
 #undef TRACE_INCLUDE_PATH
-#define TRACE_INCLUDE_PATH .
+#define TRACE_INCLUDE_PATH drivers/misc/mediatek/perf
 #undef TRACE_INCLUDE_FILE
 #define TRACE_INCLUDE_FILE perf_tracker_trace
 /* This part must be outside protection */

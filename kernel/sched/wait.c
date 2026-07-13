@@ -10,6 +10,8 @@
 #include <linux/wait.h>
 #include <linux/hash.h>
 #include <linux/kthread.h>
+#include <uapi/linux/eventpoll.h>
+#include <uapi/asm-generic/poll.h>
 
 void __init_waitqueue_head(wait_queue_head_t *q, const char *name, struct lock_class_key *key)
 {
@@ -567,6 +569,13 @@ void wake_up_atomic_t(atomic_t *p)
 	__wake_up_bit(atomic_t_waitqueue(p), p, WAIT_ATOMIC_T_BIT_NR);
 }
 EXPORT_SYMBOL(wake_up_atomic_t);
+
+void __wake_up_pollfree(wait_queue_head_t *wq_head)
+{
+	__wake_up(wq_head, TASK_NORMAL, 0, (void *)(EPOLLHUP | POLLFREE));
+	WARN_ON_ONCE(waitqueue_active(wq_head));
+}
+EXPORT_SYMBOL_GPL(__wake_up_pollfree);
 
 __sched int bit_wait(struct wait_bit_key *word, int mode)
 {

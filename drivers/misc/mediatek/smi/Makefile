@@ -12,6 +12,7 @@
 #
 
 ifneq ($(CONFIG_MTK_SMI_VARIANT),y)
+ccflags-y += -I$(srctree)
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/m4u/$(MTK_PLATFORM)/
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/$(MTK_PLATFORM)/

@@ -1,4 +1,5 @@
 # Include mtk_idle_internal.h for MTK_IDLE_OPT_XXX
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/spm/mt6765/
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/spm/common/
 # Include mt-plat/upmu_common.h
 # Include mt-plat/mtk_ccci_common.h

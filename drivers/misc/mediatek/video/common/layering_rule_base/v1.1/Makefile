@@ -16,8 +16,11 @@ obj-y += layering_rule_base.o
 ccflags-y += \
                                 -I$(srctree)/drivers/misc/mediatek/video/include     \
                                 -I$(srctree)/drivers/misc/mediatek/video/common/IPv1     \
+                                -I$(srctree)/drivers/misc/mediatek/video/common/layering_rule_base/v1.1/ \
                                 -I$(srctree)/drivers/misc/mediatek/video/$(MTK_PLATFORM)/dispsys \
                                 -I$(srctree)/drivers/misc/mediatek/video/$(MTK_PLATFORM)/videox \
+                                -I$(srctree)/drivers/misc/mediatek/video/mt6765/dispsys/ \
+                                -I$(srctree)/drivers/misc/mediatek/video/mt6765/videox/ \
                                 -I$(srctree)/drivers/misc/mediatek/sync/      \
                                 -I$(srctree)/drivers/misc/mediatek/lcm/inc/ \
 

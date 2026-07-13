@@ -12,6 +12,7 @@
 #
 
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/emi
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/emi/mt6765
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/emi/submodule
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/dramc
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/dramc/$(MTK_PLATFORM)

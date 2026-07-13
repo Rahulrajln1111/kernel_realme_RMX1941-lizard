@@ -207,6 +207,7 @@ int __wait_on_bit(wait_queue_head_t *, struct wait_bit_queue *, wait_bit_action_
 int __wait_on_bit_lock(wait_queue_head_t *, struct wait_bit_queue *, wait_bit_action_f *, unsigned);
 void wake_up_bit(void *, int);
 void wake_up_atomic_t(atomic_t *);
+void __wake_up_pollfree(wait_queue_head_t *);
 int out_of_line_wait_on_bit(void *, int, wait_bit_action_f *, unsigned);
 int out_of_line_wait_on_bit_timeout(void *, int, wait_bit_action_f *, unsigned, unsigned long);
 int out_of_line_wait_on_bit_lock(void *, int, wait_bit_action_f *, unsigned);
@@ -235,6 +236,12 @@ wait_queue_head_t *bit_waitqueue(void *, int);
 	__wake_up(x, TASK_INTERRUPTIBLE, 1, (void *) (m))
 #define wake_up_interruptible_sync_poll(x, m)				\
 	__wake_up_sync_key((x), TASK_INTERRUPTIBLE, 1, (void *) (m))
+
+static inline void wake_up_pollfree(wait_queue_head_t *wq_head)
+{
+	if (waitqueue_active(wq_head))
+		__wake_up_pollfree(wq_head);
+}
 
 #define ___wait_cond_timeout(condition)					\
 ({									\

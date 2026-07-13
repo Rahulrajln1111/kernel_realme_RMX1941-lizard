@@ -12,6 +12,7 @@
 #
 
 # Do not change the following order
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/debug_latch/plat_dbg_info/
 obj-y += plat_dbg_info.o
 obj-y += plat_sram_flag.o
 
