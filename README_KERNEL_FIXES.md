@@ -59,8 +59,36 @@ oppo_criticallog, oppo_hypnus, ion, wdt.
 ### 5. Config changes
 
 - `arch/arm64/configs/RMX1941-stock_defconfig`: Added `CONFIG_MODULE_FORCE_LOAD=y` and `CONFIG_MODULE_FORCE_UNLOAD=y`
+- `.config`: `CONFIG_DEBUG_INFO=n` (strips debug symbols, reduces vmlinux from 225MB to 38MB)
+- `.config`: `CONFIG_DEFAULT_IOSCHED="deadline"` (lower latency than CFQ for flash storage)
 
-### 6. Other minor changes
+### 6. `kernel/sched/sched_plus.h` — LB_CPU_MASK compile fix
+
+Added `LB_POLICY_SHIFT` and `LB_CPU_MASK` to the `#else` block so `CONFIG_MTK_SCHED_BOOST`
+code compiles even when `CONFIG_MTK_SCHED_TRACERS` is disabled.
+
+### 7. `drivers/staging/android/lowmemorykiller.c` — missing include
+
+Added `#include <linux/poll.h>` for `poll_table` type and `POLLIN` constant.
+
+### 8. GPU `trace_events.c` — tracepoint redefinition fix
+
+Wrapped function definitions in `drivers/misc/mediatek/gpu/gpu_rgx/m1.11ED5425693/services/server/env/linux/trace_events.c`
+with `#ifdef CONFIG_EVENT_TRACING` to prevent redefinition conflicts with `static inline` stubs
+in the corresponding header when `CONFIG_EVENT_TRACING` is not set.
+
+### 9. VM sysctl tuning — hardcoded kernel defaults
+
+Changed kernel defaults for better memory management on 2GB RAM device:
+
+| Sysctl | Stock Default | New Default | File | Effect |
+|--------|--------------|-------------|------|--------|
+| `vm.vfs_cache_pressure` | 100 | 80 | `fs/dcache.c:84` | Keep dentries/inodes in cache longer |
+| `vm.dirty_ratio` | 80 | 20 | `mm/page-writeback.c:91` | Start writeback sooner, less bursty I/O |
+
+Other VM values already optimized by vendor: `swappiness=60`, `dirty_background_ratio=10`, `page-cluster=0`.
+
+### 10. Other minor changes
 
 - Deleted leftover `.rej` and `.bak` files from failed patch applications
 - `sspm` Makefile: fixed `CONFIG_MTK_PLATFORM` quoting with `$(subst ",,...)`
@@ -89,14 +117,27 @@ fastboot reboot
 - No SELinux policies changed
 - No cmdline modifications in boot image
 - Stock ramdisk used as-is (magiskboot repack)
+- No debug configs disabled (MTK code has deep tracepoint dependencies that break if FTRACE/DEBUG_FS/TRACEPOINTS are turned off)
 
 ## Verification
 
-After flashing, verify all modules load:
+After flashing, verify:
 ```bash
+# Modules
 adb shell "su -c lsmod"
 # Should show: wmt_drv, wmt_chrdev_wifi, wlan_drv_gen4m, bt_drv, gps_drv, fmradio_drv
 
 adb shell "su -c getprop vendor.connsys.driver.ready"
 # Should show: yes
+
+# I/O scheduler
+adb shell "cat /sys/block/mmcblk0/queue/scheduler"
+# Should show: [deadline]
+
+# VM tuning (hardcoded in kernel, no su needed)
+adb shell "cat /proc/sys/vm/vfs_cache_pressure"
+# Should show: 80
+
+adb shell "cat /proc/sys/vm/dirty_ratio"
+# Should show: 20
 ```
